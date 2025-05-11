@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourism Explorer</title>
+    <!-- React and ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Hero Icons -->
+    <script src="https://unpkg.com/@heroicons/react@2.0.18/24/outline/index.js"></script>
+    <style>
+        /* Custom styles */
+        .hero-pattern {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // React Components
+        const Header = () => {
+            return (
+                <header className="bg-white shadow-sm">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-16">
+                            <div className="flex items-center">
+                                <div className="flex-shrink-0">
+                                    <span className="text-2xl font-bold text-blue-600">TE</span>
+                                </div>
+                                <nav className="hidden md:ml-6 md:flex md:space-x-8">
+                                    <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Discover</a>
+                                    <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Trips</a>
+                                    <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Review</a>
+                                    <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">More</a>
+                                </nav>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <select className="text-sm border-none focus:ring-0">
+                                    <option>USD</option>
+                                    <option>EUR</option>
+                                    <option>GBP</option>
+                                </select>
+                                <button className="text-sm font-medium text-blue-600 hover:text-blue-500">Sign in</button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const DiscountBar = () => (
+            <div className="bg-yellow-100 border-b border-yellow-300 py-2 flex items-center justify-center text-yellow-800 font-semibold text-base">
+                <span className="mr-2">🎟️</span>Get your exclusive travel discount coupons now!
+            </div>
+        );
+
+        const HotelCarousel = () => {
+            // 模拟数据
+            const hotels = [
+                {
+                    title: 'Luxury',
+                    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80&auto=format&fit=crop',
+                },
+                {
+                    title: 'Family-Friendly',
+                    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80&auto=format&fit=crop',
+                },
+                {
+                    title: 'One of a Kind',
+                    img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?w=600&q=80&auto=format&fit=crop',
+                },
+                {
+                    title: 'All-Inclusive',
+                    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80&auto=format&fit=crop',
+                },
+            ];
+            const scrollRef = React.useRef(null);
+            const scrollBy = (dir) => {
+                if (scrollRef.current) {
+                    const width = scrollRef.current.offsetWidth;
+                    scrollRef.current.scrollBy({ left: dir * (width * 0.7), behavior: 'smooth' });
+                }
+            };
+            return (
+                <section className="max-w-6xl mx-auto mt-12 px-4">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">Stay at the world's top hotels</h2>
+                    <p className="text-gray-600 mb-6 text-lg">2025's Travellers' Choice Awards Best of the Best Hotels</p>
+                    <div className="relative">
+                        {/* 左箭头 */}
+                        <button
+                            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-300 rounded-full w-12 h-12 items-center justify-center shadow hover:bg-gray-100 transition"
+                            style={{left: '-24px'}}
+                            onClick={() => scrollBy(-1)}
+                            aria-label="Scroll left"
+                        >
+                            <span className="text-2xl">&#8592;</span>
+                        </button>
+                        {/* 横向滚动卡片区 */}
+                        <div
+                            ref={scrollRef}
+                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-2 flex-nowrap"
+                            style={{scrollSnapType: 'x mandatory'}}
+                        >
+                            {hotels.map((hotel, idx) => (
+                                <div
+                                    key={hotel.title}
+                                    className="relative rounded-2xl overflow-hidden shadow-lg group cursor-pointer h-72 min-w-[260px] sm:min-w-[320px] md:min-w-[340px] flex flex-col justify-end flex-shrink-0"
+                                    style={{scrollSnapAlign: 'start'}}
+                                >
+                                    <img src={hotel.img} alt={hotel.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                    <div className="absolute top-3 left-3 z-20">
+                                        <img src='https://static.tacdn.com/img2/awards/2023/TC_badge_yellow.svg' alt="2025 badge" className="w-12 h-12" />
+                                    </div>
+                                    {/* 底部渐变遮罩 */}
+                                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent z-10" />
+                                    <div className="relative z-20 p-4 flex items-end h-full">
+                                        <span className="text-white text-2xl font-bold drop-shadow-lg">{hotel.title}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        {/* 右箭头 */}
+                        <button
+                            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-300 rounded-full w-12 h-12 items-center justify-center shadow hover:bg-gray-100 transition"
+                            style={{right: '-24px'}}
+                            onClick={() => scrollBy(1)}
+                            aria-label="Scroll right"
+                        >
+                            <span className="text-2xl">&#8594;</span>
+                        </button>
+                    </div>
+                </section>
+            );
+        };
+
+        const Hero = () => {
+            return (
+                <div className="hero-pattern h-[500px] flex items-center justify-center">
+                    <div className="text-center text-white">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">Find your next adventure</h1>
+                        <p className="text-xl mb-8">Discover amazing places to visit around the world</p>
+                        <div className="max-w-2xl mx-auto bg-white rounded-lg p-2 flex">
+                            <input
+                                type="text"
+                                placeholder="Where do you want to go?"
+                                className="flex-1 px-4 py-2 focus:outline-none"
+                            />
+                            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const WeatherCard = () => {
+            // Mock data for weather information
+            const weatherData = {
+                city: "Sydney",
+                temperature: "25°C",
+                status: "Sunny",
+                suggestion: "Perfect weather for outdoor activities!"
+            };
+
+            return (
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Weather Information</h2>
+                    <div className="space-y-4">
+                        <div className="flex items-center space-x-3">
+                            <span className="text-2xl">📍</span>
+                            <p className="text-lg"><span className="font-semibold">City:</span> {weatherData.city}</p>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <span className="text-2xl">🌡️</span>
+                            <p className="text-lg"><span className="font-semibold">Temperature:</span> {weatherData.temperature}</p>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <span className="text-2xl">🌤️</span>
+                            <p className="text-lg"><span className="font-semibold">Status:</span> {weatherData.status}</p>
+                        </div>
+                        <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                            <p className="text-lg"><span className="font-semibold">Travel Suggestion:</span> {weatherData.suggestion}</p>
+                        </div>
+                    </div>
+                    {/* API Integration Placeholder
+                    TODO: Replace mock data with actual API call
+                    Example API integration:
+                    const fetchWeatherData = async () => {
+                        const response = await fetch('WEATHER_API_ENDPOINT');
+                        const data = await response.json();
+                        // Process and display weather data
+                    };
+                    */}
+                </div>
+            );
+        };
+
+        const MapCard = () => {
+            // Mock data for attractions
+            const attractions = [
+                {
+                    name: "Sydney Opera House",
+                    lat: -33.8568,
+                    lng: 151.2153,
+                    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                },
+                {
+                    name: "Bondi Beach",
+                    lat: -33.8915,
+                    lng: 151.2767,
+                    image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                }
+            ];
+
+            return (
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Attractions Map</h2>
+                    <div className="h-96 bg-gray-200 rounded-lg mb-4 relative">
+                        <img
+                            src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                            alt="Map Placeholder"
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <p className="text-white text-xl font-semibold">Interactive Map Coming Soon</p>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        {attractions.map((attraction, index) => (
+                            <div key={index} className="flex items-center space-x-4 bg-gray-50 p-3 rounded-lg">
+                                <img
+                                    src={attraction.image}
+                                    alt={attraction.name}
+                                    className="w-16 h-16 rounded-lg object-cover"
+                                />
+                                <div>
+                                    <h3 className="font-semibold">{attraction.name}</h3>
+                                    <p className="text-sm text-gray-600">📍 {attraction.lat.toFixed(4)}, {attraction.lng.toFixed(4)}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {/* API Integration Placeholder
+                    TODO: Replace with actual map implementation
+                    Example integration:
+                    - Add Google Maps or Mapbox script
+                    - Initialize map with API key
+                    - Add markers for attractions
+                    - Implement navigation functionality
+                    */}
+                </div>
+            );
+        };
+
+        const TranslationCard = () => {
+            const [selectedLanguage, setSelectedLanguage] = React.useState('en');
+
+            // Mock translations
+            const translations = {
+                en: {
+                    title: "Sydney Opera House",
+                    description: "The Sydney Opera House is a multi-venue performing arts centre in Sydney. It is one of the 20th century's most famous and distinctive buildings."
+                },
+                zh: {
+                    title: "悉尼歌剧院",
+                    description: "悉尼歌剧院是悉尼的一个多场馆表演艺术中心。它是20世纪最著名和最具特色的建筑之一。"
+                },
+                ja: {
+                    title: "シドニー・オペラハウス",
+                    description: "シドニー・オペラハウスは、シドニーにある多目的パフォーミングアーツセンターです。20世紀で最も有名で特徴的な建物の1つです。"
+                }
+            };
+
+            return (
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Multilingual Information</h2>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Select Language:
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                            <button
+                                onClick={() => setSelectedLanguage('en')}
+                                className={`p-2 rounded-lg flex items-center justify-center space-x-2 ${
+                                    selectedLanguage === 'en'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 hover:bg-gray-200'
+                                }`}
+                            >
+                                <span>🇬🇧</span>
+                                <span>English</span>
+                            </button>
+                            <button
+                                onClick={() => setSelectedLanguage('zh')}
+                                className={`p-2 rounded-lg flex items-center justify-center space-x-2 ${
+                                    selectedLanguage === 'zh'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 hover:bg-gray-200'
+                                }`}
+                            >
+                                <span>🇨🇳</span>
+                                <span>中文</span>
+                            </button>
+                            <button
+                                onClick={() => setSelectedLanguage('ja')}
+                                className={`p-2 rounded-lg flex items-center justify-center space-x-2 ${
+                                    selectedLanguage === 'ja'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 hover:bg-gray-200'
+                                }`}
+                            >
+                                <span>🇯🇵</span>
+                                <span>日本語</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold">{translations[selectedLanguage].title}</h3>
+                        <p className="text-gray-600">{translations[selectedLanguage].description}</p>
+                    </div>
+                    {/* API Integration Placeholder
+                    TODO: Replace mock translations with actual API call
+                    Example API integration:
+                    const fetchTranslation = async (text, targetLanguage) => {
+                        const response = await fetch('TRANSLATION_API_ENDPOINT', {
+                            method: 'POST',
+                            body: JSON.stringify({ text, targetLanguage })
+                        });
+                        const data = await response.json();
+                        // Process and display translated content
+                    };
+                    */}
+                </div>
+            );
+        };
+
+        const App = () => {
+            return (
+                <div className="min-h-screen">
+                    <Header />
+                    <DiscountBar />
+                    <HotelCarousel />
+                    <Hero />
+                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <WeatherCard />
+                            <MapCard />
+                            <TranslationCard />
+                        </div>
+                    </main>
+                    <footer className="bg-gray-800 text-white py-8 mt-12">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div>
+                                    <h3 className="text-xl font-bold mb-4">About Us</h3>
+                                    <p className="text-gray-300">
+                                        Your trusted guide to exploring the world's most beautiful destinations.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+                                    <ul className="space-y-2">
+                                        <li><a href="#" className="text-gray-300 hover:text-white">Home</a></li>
+                                        <li><a href="#" className="text-gray-300 hover:text-white">Discover</a></li>
+                                        <li><a href="#" className="text-gray-300 hover:text-white">Trips</a></li>
+                                        <li><a href="#" className="text-gray-300 hover:text-white">Contact</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold mb-4">Contact</h3>
+                                    <p className="text-gray-300">
+                                        Email: info@tourismexplorer.com<br />
+                                        Phone: +61 2 1234 5678
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+                                <p>© 2024 Tourism Explorer. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        // Render the App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html> 
