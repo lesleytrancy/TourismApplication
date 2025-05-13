@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Tourism Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="dashboard.html">My Dashboard</a>
+            </div>
+            <div class="user-info">
+                <span>Welcome, User!</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>My Dashboard</h1>
+        
+        <div class="dashboard-grid">
+            <!-- Booking Management Section -->
+            <section class="dashboard-section">
+                <h2>Booking Management</h2>
+                <ul>
+                    <li>
+                        <strong>Sydney Opera House Tour</strong>
+                        <p>Date: March 25, 2024</p>
+                        <p>Status: Confirmed</p>
+                    </li>
+                    <li>
+                        <strong>Blue Mountains Day Trip</strong>
+                        <p>Date: March 27, 2024</p>
+                        <p>Status: Pending</p>
+                    </li>
+                    <li>
+                        <strong>Harbour Bridge Climb</strong>
+                        <p>Date: March 30, 2024</p>
+                        <p>Status: Confirmed</p>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Notification Center Section -->
+            <section class="dashboard-section">
+                <h2>Notification Center</h2>
+                <ul>
+                    <li>
+                        <strong>Weather Alert</strong>
+                        <p>Sunny weather expected for your Sydney Opera House tour</p>
+                        <small>2 hours ago</small>
+                    </li>
+                    <li>
+                        <strong>Booking Update</strong>
+                        <p>Your Blue Mountains trip has been confirmed</p>
+                        <small>1 day ago</small>
+                    </li>
+                    <li>
+                        <strong>Special Offer</strong>
+                        <p>20% off on selected tours this weekend</p>
+                        <small>2 days ago</small>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Favorites Section -->
+            <section class="dashboard-section">
+                <h2>Favorites</h2>
+                <ul>
+                    <li>
+                        <strong>Bondi Beach</strong>
+                        <p>Popular beach destination</p>
+                        <button onclick="alert('Added to itinerary')">Add to Itinerary</button>
+                    </li>
+                    <li>
+                        <strong>Taronga Zoo</strong>
+                        <p>World-class wildlife park</p>
+                        <button onclick="alert('Added to itinerary')">Add to Itinerary</button>
+                    </li>
+                    <li>
+                        <strong>Royal Botanic Garden</strong>
+                        <p>Beautiful botanical gardens</p>
+                        <button onclick="alert('Added to itinerary')">Add to Itinerary</button>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        // Example of using the API functions
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Example weather data fetch
+                const weatherData = await WorkspaceWeather(-33.8688, 151.2093);
+                console.log('Weather data:', weatherData);
+
+                // Example translation
+                const translatedText = await translateText('Welcome to Sydney!', 'zh');
+                console.log('Translated text:', translatedText);
+            } catch (error) {
+                console.error('Error in API calls:', error);
+            }
+        });
+    </script>
+</body>
+</html> 

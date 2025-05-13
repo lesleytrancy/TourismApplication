@@ -1,0 +1,123 @@
+[
+    {
+        "id": "frontend-api-flow",
+        "type": "tab",
+        "label": "Frontend API",
+        "nodes": [
+            {
+                "id": "weather-endpoint",
+                "type": "http in",
+                "name": "Weather API",
+                "url": "/api/weather",
+                "method": "get",
+                "wires": [
+                    [
+                        "weather-process"
+                    ]
+                ]
+            },
+            {
+                "id": "weather-process",
+                "type": "function",
+                "name": "Weather Data",
+                "func": "// Mock weather data for frontend\ndata = {\n    city: 'Sydney',\n    temperature: '25°C',\n    status: 'Sunny',\n    suggestion: 'Perfect weather for outdoor activities!'\n};\n\nmsg.payload = data;\nreturn msg;",
+                "wires": [
+                    [
+                        "weather-out"
+                    ]
+                ]
+            },
+            {
+                "id": "weather-out",
+                "type": "http response",
+                "name": "Weather Response",
+                "statusCode": "200",
+                "wires": []
+            },
+            {
+                "id": "hotels-endpoint",
+                "type": "http in",
+                "name": "Hotels API",
+                "url": "/api/hotels",
+                "method": "get",
+                "wires": [
+                    [
+                        "hotels-process"
+                    ]
+                ]
+            },
+            {
+                "id": "hotels-process",
+                "type": "function",
+                "name": "Hotels Data",
+                "func": "// Mock hotels data for frontend\nhotels = [\n    {\n        title: 'Luxury',\n        img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80&auto=format&fit=crop'\n    },\n    {\n        title: 'Family-Friendly',\n        img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80&auto=format&fit=crop'\n    },\n    {\n        title: 'One of a Kind',\n        img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?w=600&q=80&auto=format&fit=crop'\n    },\n    {\n        title: 'All-Inclusive',\n        img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80&auto=format&fit=crop'\n    }\n];\n\nmsg.payload = { hotels };\nreturn msg;",
+                "wires": [
+                    [
+                        "hotels-out"
+                    ]
+                ]
+            },
+            {
+                "id": "hotels-out",
+                "type": "http response",
+                "name": "Hotels Response",
+                "statusCode": "200",
+                "wires": []
+            },
+            {
+                "id": "currency-endpoint",
+                "type": "http in",
+                "name": "Currency API",
+                "url": "/api/currency/convert",
+                "method": "get",
+                "wires": [
+                    [
+                        "currency-process"
+                    ]
+                ]
+            },
+            {
+                "id": "currency-process",
+                "type": "function",
+                "name": "Currency Data",
+                "func": "// Mock currency conversion for frontend\nrates = {\n    'USD': { 'EUR': 0.92, 'GBP': 0.79 },\n    'EUR': { 'USD': 1.09, 'GBP': 0.86 },\n    'GBP': { 'USD': 1.27, 'EUR': 1.16 }\n};\n\nconst { from, to, amount } = msg.query;\nconst rate = rates[from]?.[to] || 1;\nconst convertedAmount = parseFloat(amount) * rate;\n\nmsg.payload = {\n    convertedAmount: convertedAmount.toFixed(2),\n    rate: rate,\n    timestamp: new Date().toISOString()\n};\n\nreturn msg;",
+                "wires": [
+                    [
+                        "currency-out"
+                    ]
+                ]
+            },
+            {
+                "id": "currency-out",
+                "type": "http response",
+                "name": "Currency Response",
+                "statusCode": "200",
+                "wires": []
+            },
+            {
+                "id": "cors-in",
+                "type": "http in",
+                "name": "CORS",
+                "url": "*",
+                "method": "options",
+                "wires": [
+                    [
+                        "cors-out"
+                    ]
+                ]
+            },
+            {
+                "id": "cors-out",
+                "type": "http response",
+                "name": "CORS Response",
+                "statusCode": "204",
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET,OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type"
+                },
+                "wires": []
+            }
+        ]
+    }
+] 
